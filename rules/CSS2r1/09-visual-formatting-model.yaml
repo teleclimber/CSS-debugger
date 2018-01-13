@@ -1,0 +1,318 @@
+---
+Visual Formatting Model:
+    ref: CSS2r1 9
+        # layout depends on box dimensions (box model), type (block vs inline?),
+        # position scheme (normal blow, float, abs pos, others?),
+        # and relation with other elements as well as externalities
+
+        # some comments on continuous media versus paged media
+
+        # hints on containing block, meaning the parent/ancestor that establishes the container.
+        # ..but details on that is in chapter 10
+        # ..but then again section * links to 9.1 for "containing block"
+
+    Containing Block:
+        ref: 9.1.2
+        concept:
+            name: containing-block
+            applies-to: element
+                # what is the difference between containing-block and block-container?
+                # containing-block is the parent/ancestor that is a block-container, right?
+            # 10.1 actually defines containing block
+
+        Containing Block Width:
+            concept:
+                name: width
+                applies-to: containing-block
+        Containing Block Height:
+            concept:
+                name: height
+                applies-to: containing-block
+            # width and height are used in relations like:
+            # margin is relative to width of containing-block
+
+    Block Level Elements and Block Boxes:
+        ref: 9.2.1
+
+        Block Level:
+            concept:
+                name: block-level
+                applies-to: element
+
+            match: display is block or list-item or table
+            relation: element is block-level
+                # I belive this means the outside is treated as a block
+                # block level boxes participate in block formatting context
+                # each block level element generates a principal block-level box
+                # ..it contains all about that element, including generated content
+
+        Block Container:
+            concept:
+                name: block-container
+                applies-to: element
+            match: element is not replaced and
+                    ( element is block-level or display is inline-block )
+            relation: element is block-container
+            # this match is incomplete / problematic:
+            # - misses caveat about "table boxes"
+            # - not clear on meaning of "inline boxes", interpreted as display: inline-block
+            # - "table cells"?
+            # note "block-container" occurs everywhere in the spec!
+
+        Block Box:
+            concept:
+                name: block-box
+                applies-to: element
+            match: element is block-level and element is block-container
+            relation: element is block-box
+
+        Anonymous block Boxes:
+            ref: 9.2.1.1
+                # block leve stuff in inline content, screws things pretty badly.
+                # Not sure what to do here.
+                # question is are anonymous boxes ver treated differently?
+    Inline Level elements and inline boxes:
+        ref: 9.2.2
+        concept:
+            name: inline-level
+            applies-to: element
+        match: display is inline or inline-table or inline-block
+        relation: element is inline-level
+
+    The display property:
+        ref: 9.2.4
+        property:
+            name: display
+            value:
+                - inline
+                - block
+                - list-item
+                - inline-block
+                - table
+                - inline-table
+                - table-row-group
+                - table-header-group
+                - table-footer-group
+                - table-row
+                - table-column-group
+                - table-column
+                - table-cell
+                - table-caption
+                - none
+                - inherit
+            inherited: no
+            initial: inline
+
+
+
+            # here block, inline-block and a bunch of other s are defined.
+            # the value (potentially) is that inline-block's children will be treated as blocks?
+
+    Positioning Schemes:
+        ref: 9.3
+            #description of normal flow, floats, and abs position
+        position property:
+            ref: 9.3.1
+
+            property:
+                name: position
+                value:
+                    - static
+                    - relative
+                    - absolute
+                    - fixed
+                    - inherit
+                inherited: no
+                initial: static
+
+            Positioned:
+                concept:
+                    name: positioned
+                    applies-to: element
+                match: position is not static   # as in "calulated",
+                relation: element is positioned
+
+            Relatively Positioned:
+                concept:
+                    name: relatively-positioned
+                    applies-to: element
+                match: position is relative   # as in "calulated",
+                relation: element is relatively-positioned
+
+            Absolutely Positioned:
+                concept:
+                    name: absolutely-positioned
+                    applies-to: element
+                match: position is absolute or fixed
+                relation: element is absolutely-positioned
+                    #fixed is a form of absolute positioning
+
+        Box offsets top right bottom left properties:
+            ref: 9.3.2
+
+            property:
+                name:
+                    - top
+                    - right
+                    - bottom
+                    - left
+                value:
+                    - length
+                    - percentage
+                    - auto
+                    - inherit
+                inherited: no
+                initial: auto
+                # percentages (thought they are "normal", but still useful to explicitly say "what")
+                # different behavior for absolute versus reltaive positioning
+                # in chrome you can set left: 30px, have no effect, even though computed shows it as 30px.
+
+            Relatively Positioned:
+                match: element is relatively-positioned
+                relation: position is relative to position in normal-flow
+            Absolutely Positioned:
+                match: element is absolutely-positioned
+                relation: position is relative to containing-block
+
+            Percentages vertical:
+                match: top/bottom specified in percentages
+                relation: percent is relative to height of containing-block
+            Percentages horizontal:
+                match: right/left specified in percentages
+                relation: percent is relative to width of containing-block
+
+            Does not Apply:
+                match: element is not positioned and top/right/bottom/left is specified
+                relation: top/right/bottom/left do not apply
+
+            #for auto values see width and height
+
+    Block Formatting Context:
+        ref: 9.4.1
+            #here we establish a formatting context
+        concept:
+            name: block-formatting-context
+            applies-to: element
+
+        match: element is floated
+                or element is absolutely-positioned
+                or ( element is block-container and element is not block-box )
+                or ( element is block-box and overflow is not visible ) # *(except when that value has been propagated to the viewport)
+        relation: element is block-formatting-context
+            #some info on how boxes are laid out in block formatting context
+
+    Inline formatting context:
+        ref: 9.4.2
+            # is this where it is established that vertical margins and paddings are nto really considered? No, this is covered in 8.3
+
+    Relative Positioning:
+        ref: 9.4.3
+
+        Left and Right:
+            match: position is relative and left is not auto and right is not auto
+                # really we want to match if they are not opposite. auto values on one of them is fine.
+            relation: right does not apply
+        Top and Bottom:
+            match: position is relative and top is not auto and bottom is not auto
+                # really we want to match if they are not opposite. auto values on one of them is fine.
+            relation: bottom does not apply
+
+    Floats:
+        ref: 9.5
+
+        Blocks next to Floats:
+            match: element is table
+                    or ( element is block-level and element is replaced )
+                    or element is block-formatting-context
+            warning: Element can not overlap floated element's margin box.
+
+        Stacking Context:
+            match: element is floated
+            relation: element is stacking-context   # eeeesxcept it's nto a real stacking context. Jut pustting it here to revisit.
+
+        Float Property:
+            ref: 9.5.1
+
+            property:
+                name: float
+                value:
+                    - left
+                    - right
+                    - none
+                    - inherit
+                inherited: no
+                initial: none
+
+            Floated:
+                concept:
+                    name: floated
+                    applies-to: element
+
+                match: float is left or right
+                relation: element is floated
+
+        Clear Property:
+            ref: 9.5.2
+                #meh
+
+    Absolute Positioning:
+        ref: 9.6
+        match: element is absolutely-positioned
+        relation: element is containing-block
+        #relation: ~~establishes a new containing block for normal flow children and absolutely (but not fixed) positioned descendants.
+            # basically this is "element is containing-block", but thtere are caveats
+            # 9.6.1 fixed pos
+
+    Display Position and Float:
+        ref: 9.7
+
+        Position Absolute and Float:
+            match: element is absolutely-positioned and float is specified
+            relation: float does not apply
+
+        Display Specified and Computed values:
+            match: element is absolutely-positioned or element is floated or element is root
+                #here we have a "filter" type match.
+            Display computes to Table:
+                match: display is specified as inline-table    # display is inline-table ? gets weird though because relation actually changes that
+                relation: display computes to table
+            Display computes to Block:
+                match: display is inline or table-row-group or table-column or table-column-group or table-header-group or
+                    table-footer-group or table-row or table-cell or table-caption or inline-block
+                relation: display computes to block
+            # the others match what is specified
+
+    Layered Presentation:
+        ref: 9.9
+
+        z-index property:
+            ref: 9.9.1
+
+            property:
+                name: z-index
+                value:
+                    - auto
+                    - integer
+                    - inherit
+                inherited: no
+                initial: auto
+
+            Applies:
+                match: z-index is specified and element is not positioned
+                relation: z-index does not apply
+
+            Stacking Context:
+                concept:
+                    name: stacking-context
+                    applies-to: elements
+
+                match: z-index is integer
+                relation: element is stacking-context
+
+        Other Stacking Contexts:
+            match: element is root or element is positioned
+            relation: element is stacking-context
+                # there are many other things that set stacking context
+
+    Text Direction:
+        ref: 9.10

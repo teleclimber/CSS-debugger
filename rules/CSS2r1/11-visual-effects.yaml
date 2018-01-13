@@ -1,0 +1,20 @@
+---
+Visual Effects:
+    ref: CSS2r1 11
+    Overflow and clipping:
+
+        Overflow property:
+            ref: 11.1.1
+            property:
+                name: overflow
+                value:
+                    - visible
+                    - hidden
+                    - scroll
+                    - auto
+                    - inherit
+                inherited: no
+                initial: visible
+
+
+                # there is more but I wanted to put the props in

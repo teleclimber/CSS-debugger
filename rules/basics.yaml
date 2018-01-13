@@ -1,0 +1,34 @@
+---
+Basic concepts:
+    Element:
+        concept:
+            name: element
+                #doesn't apply to anything since it's kind of a root concept
+    Replaced elements:
+        # the definitions of replaced and non-replaced live in HTML spec:
+        # https://html.spec.whatwg.org/multipage/rendering.html#replaced-elements
+        concept:
+            name: replaced
+            applies-to: element
+    Non-Replaced elements:
+        concept:
+            name: non-replaced
+            applies-to: element
+            # could we not just rely on using "not replaced" in match?
+            # Would also need to support setting relation as such:
+            # relation: element is not replaced
+            # implies that replaced is boolean, which won't be true of others?
+            # In current setup we could erroneously have an
+            # ..element that is bot replaced and non-replaced ?!?
+
+    Root Element:
+        concept:
+            name: root
+            applies-to: element
+            # can't find the definition of root element in CSS specs.
+            # But it's just what it seems I suppose?
+
+    Normal Flow:
+        concept:
+            name: normal-flow
+            # definition? applies-to?

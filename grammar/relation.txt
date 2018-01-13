@@ -1,0 +1,77 @@
+Original list:
+~~ margin is relative to width
+~~ it's allowed but you may run into impl limits
+property has no effect
+~~ lots of funky rules at CSS2r1 10.3
+~~ percent is relative to the width of the containing block
+~~ padding values can not be negative
+element is block-level
+element is inline-level
+element is positioned
+element is absolutely-positioned
+position is relative to position in normal flow
+position is relative to containing block
+percent is relative to height of the containing Block's height
+percent is relative to width of the containing Block's height
+top/right/bottom/left do not apply
+element is formatting-context
+right does not apply
+bottom does not apply
+~~element can not ovrlap floated element's margin box.
+element is stacking-context
+element is floated
+~~establishes a new containing block for normal flow children and absolutely (but not fixed) positioned descendants.
+float does not apply
+display computes to table
+display computes to block
+z-index does not apply
+element is stacking-context
+element is stacking-context
+
+Rearranged:
+
+~~ it's allowed but you may run into impl limits	// that's a warning, not a "relation"
+
+~~ lots of funky rules at CSS2r1 10.3	// ok we'll pick those up there then.
+
+~~ padding values can not be negative
+//that's an error / warning,
+// ..or we do "padding computes to 0"?
+
+~~element can not overlap floated element's margin box.
+// has to be a warning for now
+
+~~establishes a new containing block for normal flow children and absolutely (but not fixed) positioned descendants.
+// I think this one is simply: element is containing-block
+// the caveats are encoded in other parts of the spec (or are they? that's not clear)
+
+percent is relative to width of containing-block
+margin is relative to width of containing-block
+position is relative to position in normal-flow
+position is relative to containing-block
+percent is relative to height of containing-block
+percent is relative to width of containing-block
+
+display computes to table
+display computes to block
+
+top/right/bottom/left do not apply
+float does not apply
+z-index does not apply
+right does not apply
+bottom does not apply
+property has no effect (rewrite)
+
+element is block-level
+element is inline-level
+element is positioned
+element is absolutely-positioned
+element is stacking-context
+element is stacking-context
+element is stacking-context
+element is floated
+element is formatting-context
+
+------------------
+thing is thing
+thing does not apply

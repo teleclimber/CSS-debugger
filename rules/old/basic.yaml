@@ -1,0 +1,86 @@
+---
+Root Element: {}
+Is Replaced Element:
+  ref: ''
+  match: "tag is iframe or video or embed or img"
+  relation: target element's 'is replaced' flag is true
+  # other elements can be considered replaced, but I can't find a definitions really
+Box Type:
+  ref: CSS3-box 4.2
+  Block Level:
+    match: "~~ used value of display is block or list-item or table or table-* or <template>"
+      # used value? is that our default?
+      # <tempalte>?? I think we can ignore.
+    relation: target element's Box Type is Block Level
+  Inline Level:
+    match: "~~used value of display is inline or inline-block or inline-table or ruby"
+      # "used value"
+    relation: "$elem/BoxType is 'Inline Level'"
+  comment: anonymous boxes are created by the engine...
+Containing Block:
+  ref: CSS3-box 4.2
+  for root element:
+    match: target element is Root Element
+    relation: "..."
+  for other elements:
+    match: target element is not Root Element
+    relation: box is content edge of nearest ancestor box that is block level
+    comment: ancestor box could be an anonymous box, so have to sort out when these
+      get created
+  comment: it's different for abs positioned elements. will have to override. Also,
+    contining blocks have direction, etc...
+Flow Root: "..."
+Padding:
+  ref: CSS3-box 5
+  percentage values:
+    match: height specified in percentage
+    relation: percent of width of Containing Block
+    comment: changes based on direction of containing block
+Margins:
+  ref: CSS3-box 6
+  percentage values:
+    ref: CSS3-box 6.1
+    match: height specified in percentage
+    relation: percent of width of Containing Block
+    comment: changes based on direction of containing block
+  Collapsing Margins:
+    ref: CSS3-box 6.2
+    match: box is block level
+      and box is not floated
+      and overflow is visible
+      and element is not absolutely-positioned
+      and block-type is not inline-block
+      and element is not root element
+    relation: margins collapse
+    comment: Many more rules about *how* they collapse. Would be nice to tell devs
+      whether they are in collapsible or not. situation
+Width:
+  ref: CSS3-box 7
+  applies to:
+    match: width is specified
+      and element is non-replaced inline, table-row,
+      row-group
+      # "width is specified"
+    relation: width does not apply
+  percentage:
+    match: width specified in percentage
+    relation: percentage is of width of containing block
+  comments:
+  - a reminder on box sizing could be added too? (only affects meaning of value, not
+    real 'side-effect'
+  - "dat note 'If the containing block's width depends on this element's width,
+    then the resulting layout is undefined in CSS3.'"
+Height:
+  ref: CSS3-box 7
+  applies to:
+    match: element has height specified and element is non-replaced inline, table-column,
+      column-group
+      # all elements but non-replaced inline elements, table rows, and row groups
+      # element is non-replaced inline elements, table rows, and row groups
+      # (element is not replaced and element is inline) or tag is tr
+      # height is specified and ( (element is not replaced and element is inline) or tag is tr )
+      # not sure we cover this
+    relation: height does not apply
+  percentage:
+    match: height value specified in percentage
+    comment: spec says 'see prose', but where?

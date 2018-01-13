@@ -1,0 +1,78 @@
+---
+Box Model:
+    ref: CSS2r1 8
+    Margins:
+        ref: 8.3
+        property:
+            name:
+                - margin
+                - margin-left
+                - margin-right
+                - margin-top
+                - margin-bottom
+            value:
+                - length
+                - percentage
+                - auto
+            initial: 0
+            inherited: no
+                # we could add percentage: instead of matching
+                # same for applies to
+
+        percentages:
+            match: margin/margin-top/margin-bottom specified in percentages
+            relation: margin is relative to width of containing-block
+                # width of what?
+        negative values:
+            match: margin/margin-top/margin-bottom/margin-left/margin-right is negative
+            warning: Negative margins are allowed but you may run into implementation limits
+        no effect:
+            match: margin/margin-top/margin-bottom is specified
+                and element is non-replaced
+                and element is inline
+            relation: margin-top/margin-bottom do not apply
+
+        #auto:
+            #match: margin* is auto
+                # it will be auto, but then the actual used value will get calculated
+                # so this is an example of implied/specified versus used
+                # Note if this kind of thing only happens with auto values, we can infer "specified" when we see auto.
+            # relation: ~~ lots of funky rules at CSS2r1 10.3
+        Collapsing:
+            ref: 8.3.1
+            # this is going to be much harder because it involves multiple elements
+            # skip it for now?
+            # ..it may be possible and worthwhile to make a match that rules out collapsing
+
+    Padding:
+        ref: 8.4
+        property:
+            name:
+                - padding
+                - padding-left
+                - padding-right
+                - padding-top
+                - padding-bottom
+            value:
+                - length
+                - percentage
+            initial: 0
+            inherited: no
+
+        percentages:
+            match: padding-top/padding-bottom specified in percent
+            relation: percent is relative to width of containing-block
+                # this is useful even for lateral padding
+        negative values:
+            match: padding/padding-top/padding-bottom/padding-left/padding-right is negative #this should be specified values
+            error: Padding values can not be negative
+                # here this is an error condition we should treat as such
+                # note chrome does give that error as "value is invalid"
+                # note that computed values are 0px
+
+    Borders:
+        ref: 8.5
+            # most of what goes on here is about how the different properties cna specify their values.
+    Box model for inline elements and bidirectional content:
+        ref: 8.6
+            # some stuff about rtl direction and how it relates to left/right in props above.

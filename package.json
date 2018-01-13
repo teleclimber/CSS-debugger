@@ -1,0 +1,16 @@
+{
+  "name": "css-debugger",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+	"nearley": "nearleyc grammar/nearley/basic-match.ne > grammar/compiled/basic-match.js; nearleyc grammar/nearley/relation.ne > grammar/compiled/relation.js ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "js-yaml": "^3.10.0",
+    "nearley": "^2.11.0"
+  }
+}

@@ -1,0 +1,16 @@
+---
+Basic:
+    - tag isnt even in it yo
+    - tag is iframe
+    - box is not floated
+    - tag is iframe or img or embed or table-*
+    - box is block_level and box is not floated and overflow is visible
+    - tag is iframe or embed and box is floated
+    - tag is img or box is floated
+    - tag is not img or button or input
+    - tag is iframe or (box is floated and opacity is one) or box is positioned
+    - tag is iframe and (box is floated or opacity is one) and box is positioned
+    - width specified in percentage
+    - width in percentage
+    - width in percentage or ems or inline-block
+    - height is specified and ( (element is not replaced and element is inline) or tag is tr )

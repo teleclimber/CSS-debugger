@@ -169,10 +169,10 @@ Visual Formatting Model:
 
             Relatively Positioned:
                 match: element is relatively-positioned
-                relation: position is relative to position in normal-flow
+                relation: left/right/top/bottom is relative to position in normal-flow
             Absolutely Positioned:
                 match: element is absolutely-positioned
-                relation: position is relative to containing-block
+                relation: left/right/top/bottom is relative to containing-block
 
             Percentages vertical:
                 match: top/bottom specified in percentages
@@ -228,7 +228,8 @@ Visual Formatting Model:
 
         Stacking Context:
             match: element is floated
-            relation: element is stacking-context   # eeeesxcept it's nto a real stacking context. Jut pustting it here to revisit.
+            relation: element is stacking-context
+                # eeeexcept it's not a real stacking context. Just pustting it here to revisit.
 
         Float Property:
             ref: 9.5.1
@@ -304,7 +305,7 @@ Visual Formatting Model:
             Stacking Context:
                 concept:
                     name: stacking-context
-                    applies-to: elements
+                    applies-to: element
 
                 match: z-index is integer
                 relation: element is stacking-context

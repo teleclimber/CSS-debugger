@@ -28,69 +28,106 @@ rules.forEach( (r) => {
 	parsed_rules[r] = yaml_rules;
 });
 
+//////////
+// go deeper.
+// thinking we should walk all the rules, and look for concepts and property declarations
+// store these somewhere
+// then walk again and determine exactly what the things found in  match and relation refer to.
 
-
-/////////////////////////////////////
 const traverse_relation = require( './traverse/traverse_relation.js' );
 const traverse_match = require( './traverse/traverse_match.js' );
 const definitions = require( './concepts/definitions.js' );
 
 const keys = ['ref', 'match', 'relation', 'warning', 'comment'];
 
-const all_things = {};
+_walk( parsed_rules, (obj, path) => {
+	if( obj.property ) {
+		definitions.registerProperty( obj.property );
+	}
+	if( obj.concept ) {
+		definitions.registerConcept( obj.concept );
+	}
 
-if( parsed_rules ) {
-	_walk( parsed_rules, (obj, path) => {
-		if( obj.property ) {
-			definitions.registerProperty( obj.property );
-			if( Array.isArray(obj.property.name) ) {
-				obj.property.name.forEach( (n) => {
-					_addThing( n, { 'found in':'property', path:path } );
-				});
-			}
-			else {
-				_addThing( obj.property.name, { 'found in':'property', path:path } );
-			}
+	return true;
+});
+
+// walk again
+// instead of just fetching things blindly
+// augment the rules object
+const rules_list = [];
+_walk( parsed_rules, (obj, path, match_filter) => {
+	//console.log( 'match_filter', match_filter );
+	if( obj.match ) {
+		try {
+			obj.match = traverse_match.augment( obj.match, match_filter );
 		}
-		if( obj.concept ) {
-			definitions.registerConcept( obj.concept );
-			_addThing( obj.concept.name, { 'found in':'concept', path:path } );
+		catch(e) {
+			console.log( path );
+			console.log( obj.match._str );
+			throw e;
 		}
-		if( obj.match ) {
-			let things = traverse_match.getThings( obj.match );
-			things.forEach( (t) => { _addThing( t, {'found in':'match', path:path, str:obj.match._str} ); } );
+	}
+	if( obj.relation ) {
+		try {
+			obj.relation = traverse_relation.augment( obj.relation );
 		}
-		if( obj.relation ) {
-			let things = traverse_relation.getThings( obj.relation );
-			things.forEach( (t) => { _addThing( t, {'found in':'relation', path:path, str:obj.relation._str} ); } );
+		catch(e) {
+			console.log( path );
+			console.log( obj.relation._str );
+			throw e;
 		}
+	}
 
-		return true;
-	});
-}
+	if( obj.relation || obj.warning || obj.error ) {
+		rules_list.push( {
+			path: path,
+			match: obj.match,
+			relation: obj.relation,
+			warning: obj.warning,
+			error: obj.error
+		} );
+		//...OK but this doesn't work because of "filter matches"
+		// ' wegotta incorporate filter matches above in augmentation. '
+		// ' see 9.7 for a filter match example'
+	}
 
-const out = {};
-for( let k in all_things ) {
-	let found = false;
+	return true;
+});
 
-	const type = definitions.getType( k ) || 'lost';
-	if( !(type in out) ) out[type] = {};
-	out[type][k] = all_things[k];
-}
-console.log( JSON.stringify(out) );
+// can we then package the rules a bit better?
+// - list of concepts
+// - list of preoperties
+// - array of rules, with path, _strs(?), and augmented match, warns, and relations
 
-function _walk( obj, cb, path ) {
+const built = {
+	concepts: definitions.getConcepts(),
+	properties: definitions.getProperties(),
+	rules: rules_list
+};
+// ^^ok, I think we basically have it here.
+// ..need to have an easy way to visualize the built rules so we can check correctness
+// .. and then verify each thing gets set somewhere.
+
+
+//console.log( JSON.stringify(built) );
+
+const path = require( 'path' );
+const jsonfile = require( 'jsonfile' );
+jsonfile.writeFileSync( path.resolve(__dirname,'build/rules.json'), built );
+
+
+////////////////////
+function _walk( obj, cb, path, match_filter ) {
 	if( !path ) path = '';
 	for( let k in obj ) {
 		if( !keys.includes(k) && typeof obj[k] === 'object' ) {
 			const next_path = path + k + (obj[k] && obj[k].ref ? ` (${obj[k].ref})` : '');
-			const cb_ret = cb( obj[k], next_path );
-			if( cb_ret ) _walk( obj[k], cb, next_path+' > ' );
+			const cb_ret = cb( obj[k], next_path, match_filter );
+			if( cb_ret ) {
+				let m = match_filter;
+				if( obj[k].match ) m = obj[k].match;
+				_walk( obj[k], cb, next_path+' > ', m );
+			}
 		}
 	}
-}
-
-function _addThing( thing, data ) {
-	if( !all_things[thing] ) all_things[thing] = [];
-	all_things[thing].push( data );
 }

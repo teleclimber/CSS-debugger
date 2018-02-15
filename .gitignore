@@ -8,6 +8,9 @@ pids
 *.pid
 *.seed
 
+# build
+build
+
 # Dependency directory
 node_modules
 

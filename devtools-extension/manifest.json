@@ -1,0 +1,7 @@
+{
+  "name": "CSS Debugger",
+  "version": "0.1",
+  "description": "Extends the Developer Tools, adding CSS debugger",
+  "devtools_page": "devtools.html",
+  "manifest_version": 2
+}

@@ -1,0 +1,19 @@
+<style>
+	.not {
+		font-weight: bold;
+		color: rgb(142, 34, 25);
+	}
+</style>
+
+<div>
+	<h4>Property Value Is</h4>
+	<div>Properties: {{part.properties.join(', ')}}</div>
+
+	{{#if part.value}}
+		<div>Value: {{#if part.negative}}<span class="not">NOT</span>{{/if}} {{part.value}}</div>
+	{{else}}<div> //no value</div>{{/if}}
+
+	{{#if part.qualifier}}
+		<div>Qualifier: {{#if part.negative}}<span class="not">NOT</span>{{/if}} {{part.qualifier}}</div>
+	{{else}}<div> //no qualifier</div>{{/if}}
+</div>

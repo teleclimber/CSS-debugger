@@ -1,0 +1,43 @@
+<style>
+	h3 {
+		color: rgb(177, 88, 15);
+		margin-bottom: 0;
+	}
+</style>
+
+<h3>Relation:</h3>
+{{#if relation._str}}{{relation._str}}{{/if}}
+
+{{#if component}}<:Component {component} relation="{{relation}}" />
+{{else}}<div>//component not implemented: {{relation.type}}</div>
+{{/if}}
+
+<script>
+	import RelativeTo from './RelativeTo.html';
+	import IsConcept from './IsConcept.html';
+	import DoesNotApply from './DoesNotApply.html';
+	import ComputesTo from './ComputesTo.html';
+
+
+	const type_comps = {
+		'relative-to': RelativeTo,
+		'is-concept': IsConcept,
+		'property-does-not-apply': DoesNotApply,
+		'property-computes-to': ComputesTo
+	};
+
+	export default {
+		computed: {
+			component: (relation) => {
+				if( relation.type in type_comps ) return type_comps[relation.type];
+				else return null;
+			}
+		},
+		components: {
+			RelativeTo,
+			IsConcept,
+			DoesNotApply,
+			ComputesTo
+		}
+	}
+</script>

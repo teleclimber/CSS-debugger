@@ -1,0 +1,16 @@
+<h1>All rules</h1>
+<div>
+	{{#each rules as rule}}
+		<Rule rule="{{rule}}" />
+	{{/each}}
+</div>
+
+<script>
+	import Rule from './Rule.html';
+
+	export default {
+		components: {
+			Rule
+		}
+	}
+</script>

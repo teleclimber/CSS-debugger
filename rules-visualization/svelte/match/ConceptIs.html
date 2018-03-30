@@ -1,0 +1,12 @@
+<style>
+	.not {
+		font-weight: bold;
+		color: rgb(142, 34, 25);
+	}
+</style>
+
+<div>
+	<h4>Concept Is</h4>
+	<div>Concept: {{part.concept}}</div>
+	<div>Is: {{#if part.negative}}<span class="not">NOT</span>{{/if}} {{part.is}}</div>
+</div>

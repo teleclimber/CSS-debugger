@@ -1,0 +1,40 @@
+
+{{#if component}}<:Component {component} part="{{part}}" />
+{{else}}//component not implemented: {{part.type}}
+{{/if}}
+
+<script>
+	import Specified from './Specified.html';
+	import PropertyValueIs from './PropertyValueIs.html';
+	import ConceptIs from './ConceptIs.html';
+	import And from './And.html';
+	import Or from './Or.html';
+	import Group from './Group.html';
+
+	const type_comps = {
+		'specified': Specified,
+		'property-value-is': PropertyValueIs,
+		'concept-is': ConceptIs,
+		'and': And,
+		'or': Or,
+		'group': Group
+	};
+
+	export default {
+
+		computed: {
+			component: (part) => {
+				if( part.type in type_comps ) return type_comps[part.type];
+				else return null;
+			}
+		},
+		components: {
+			Specified,
+			PropertyValueIs,
+			ConceptIs,
+			And,
+			Or,
+			Group
+		}
+	}
+</script>

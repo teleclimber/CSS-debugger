@@ -11,6 +11,7 @@ pids
 # build
 build
 devtools-extension/dist/
+rules-visualization/bundle.js
 
 # Dependency directory
 node_modules

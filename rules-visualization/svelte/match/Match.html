@@ -1,0 +1,25 @@
+<style>
+	h3 {
+		color: green;
+		margin-bottom: 0;
+	}
+
+</style>
+
+<div class="match">
+	<h3>Match:</h3>
+	{{#if match._str}}{{match._str}}{{/if}}
+
+	<MatchPart part={{match}} />
+
+</div>
+
+<script>
+	import MatchPart from './MatchPart.html';
+
+	export default {
+		components: {
+			MatchPart
+		}
+	}
+</script>

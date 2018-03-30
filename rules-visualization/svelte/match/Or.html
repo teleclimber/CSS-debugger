@@ -1,0 +1,26 @@
+<style>
+	.indenter {
+		border-left: 1px solid grey;
+		padding-left: 20px;
+	}
+	h4 {
+		color: green;
+	}
+</style>
+
+{{#each part.conditions as condition, i}}
+	{{#if i !== 0 }}<h4>Or</h4>{{/if}}
+	<div class="indenter">
+		<MatchPart part="{{condition}}" />
+	</div>
+{{/each}}
+
+<script>
+	import MatchPart from './MatchPart.html';
+
+	export default {
+		components: {
+			MatchPart
+		}
+	}
+</script>

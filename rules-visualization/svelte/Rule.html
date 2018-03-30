@@ -1,0 +1,39 @@
+<style>
+	.rule-container {
+		border: 1px solid black;
+		margin: 1em;
+		padding: 1em;
+	}
+
+</style>
+
+<div class="rule-container">
+	<Path path="{{rule.path}}" />
+
+	{{#if rule.match}}<Match match="{{rule.match}}" />{{/if}}
+
+	{{#if rule.relation}}<Relation relation="{{rule.relation}}" />{{/if}}
+
+	{{#if rule.error}}<ErrorMsg error="{{rule.error}}" />{{/if}}
+
+	{{#if rule.warning}}<WarningMsg warning="{{rule.warning}}" />{{/if}}
+
+</div>
+
+<script>
+	import Path from './Path.html';
+	import Match from './match/Match.html';
+	import Relation from './relation/Relation.html';
+	import ErrorMsg from './messages/ErrorMsg.html';
+	import WarningMsg from './messages/WarningMsg.html';
+
+	export default {
+		components: {
+			Path,
+			Match,
+			Relation,
+			ErrorMsg,
+			WarningMsg
+		}
+	}
+</script>

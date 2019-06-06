@@ -35,7 +35,7 @@ function _augment( obj ) {
 				ret.type = 'specified';
 				if( !obj.left.every(definitions.isProperty) ) throw new Error( obj.left +' not all property' );
 				ret.properties = obj.left;
-				ret.negative = obj.negative;
+				ret.negative = obj.negative;	// is this "not specified", or is it "prop is negative value"???
 			}
 			else {
 				// here look at what is on the right and left and make sure they "align"

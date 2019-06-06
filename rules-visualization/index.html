@@ -3,13 +3,25 @@
 	<head>
 		<meta charset="utf-8">
 		<style>
-
+			.test-box {
+				background: orange;
+				border: 3px dashed red;
+				margin: 2em;
+				padding 2em;
+			}
+			#test-element {
+				margin-top: -10px;
+			}
 
 		</style>
 
+		<script src="vendor/CSSUtilities.js"></script>
 		<script src="bundle.js" ></script>
 	</head>
 	<body>
+		<div class="test-box">
+			<div id="test-element">test</div>
+		</div>
 		<div id="rules-list"></div>
 	</body>
 </html>

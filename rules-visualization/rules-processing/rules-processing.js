@@ -8,7 +8,7 @@ function _init( rules_data ) {
 }
 function _process( specified, computed, concepts ) {
 	const results = [];
-	let concepts_mod = false; ...instead of looking at this, order the rules such that we only need to interate over them once.
+	let concepts_mod = false; //...instead of looking at this, order the rules such that we only need to interate over them once.
 	_rules.forEach( (r) => {
 		if( r.match ) {
 			const match_result = processMatch( r.match, specified, computed, concepts );

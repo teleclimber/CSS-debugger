@@ -22,7 +22,6 @@ Box Model:
         percentages:
             match: margin/margin-top/margin-bottom specified in percentages
             relation: margin is relative to width of containing-block
-                # width of what?
         negative values:
             match: margin/margin-top/margin-bottom/margin-left/margin-right is negative
             warning: Negative margins are allowed but you may run into implementation limits

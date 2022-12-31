@@ -9,11 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "webpack": "^4.1.1"
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
     "svelte": "^1.58.0",
-    "svelte-loader": "^2.5.1",
-    "webpack-cli": "^2.0.12"
+    "svelte-loader": "^3.1.4",
+    "webpack-cli": "^5.0.1"
   }
 }
